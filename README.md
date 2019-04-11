@@ -1,2 +1,2 @@
-# Social-media
-Social media page for developers based on the udemy course by @traversymedia
+# Quiz-EBMP
+Quiz game developed by students at IES Carles Vallbona
