@@ -1,13 +1,16 @@
 import {
   GET_QUESTIONS,
   GET_ANSWERS,
-  GET_CORRECT_ANSWER
+  GET_CORRECT_ANSWER,
+  SET_QUESTION_SELECTED
 } from "../actions/types";
 
 const initialState = {
   questions: [],
   answers: [],
-  correctAnswer: {}
+  correctAnswer: {},
+  questionSelected: {},
+  puntuation: 0
 };
 
 export default function(state = initialState, action) {
@@ -15,7 +18,8 @@ export default function(state = initialState, action) {
     case GET_QUESTIONS:
       return {
         ...state,
-        questions: action.payload
+        questions: action.payload,
+        questionSelected: action.payload[3]
       };
     case GET_ANSWERS:
       return {
@@ -26,6 +30,17 @@ export default function(state = initialState, action) {
       return {
         ...state,
         correctAnswer: action.payload
+      };
+    case SET_QUESTION_SELECTED:
+      return {
+        ...state,
+        questionSelected:
+          state.questions.indexOf(state.questionSelected) + 1 >=
+          state.questions.length
+            ? state.questions[0]
+            : state.questions[
+                state.questions.indexOf(state.questionSelected) + 1
+              ]
       };
     default:
       return state;

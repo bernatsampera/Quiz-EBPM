@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import {
   getQuestions,
   getAnswers,
-  getCorrectAnswer
+  getCorrectAnswer,
+  setQuestionSelected
 } from "../../actions/gameActions";
+import Countdown from "react-countdown-now";
 import Question from "./Question";
 import Spinner from "../common/Spinner";
 import isEmpty from "../../validation/is-empty";
@@ -13,6 +15,20 @@ import isEmpty from "../../validation/is-empty";
 export class Game extends Component {
   componentDidMount() {
     this.props.getQuestions();
+    this.startGame();
+  }
+
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.game.questionSelected != this.props.game.questionSelected) {
+      const { questionSelected } = nextprops.game;
+      this.setAnswer(questionSelected);
+    }
+  }
+
+  startGame() {
+    setInterval(() => {
+      this.props.setQuestionSelected();
+    }, 5000);
   }
 
   setAnswer(question) {
@@ -21,22 +37,22 @@ export class Game extends Component {
   }
 
   render() {
-    const { questions, answers } = this.props.game;
+    const { answers, questionSelected } = this.props.game;
 
     let gameContent;
-
-    if (isEmpty(questions)) {
+    if (isEmpty(questionSelected)) {
       gameContent = <Spinner />;
     } else {
-      console.log(questions);
       if (isEmpty(answers)) {
-        this.setAnswer(questions[0]);
+        this.setAnswer(questionSelected);
       }
       gameContent = (
         <div>
-          {questions.map(question => (
-            <Question key={question._id} question={question} />
-          ))}
+          <Question
+            key={questionSelected._id}
+            question_text={questionSelected.text}
+            answers={answers}
+          />
         </div>
       );
     }
@@ -44,6 +60,7 @@ export class Game extends Component {
     return (
       <div>
         <h1> This is the game </h1>
+        <Countdown date={Date.now() + 5000} />
         {gameContent}
       </div>
     );
@@ -60,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getQuestions, getAnswers, getCorrectAnswer }
+  { getQuestions, getAnswers, getCorrectAnswer, setQuestionSelected }
 )(Game);

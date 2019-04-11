@@ -1,5 +1,10 @@
 import axios from "axios";
-import { GET_QUESTIONS, GET_ANSWERS, GET_CORRECT_ANSWER } from "./types";
+import {
+  GET_QUESTIONS,
+  GET_ANSWERS,
+  GET_CORRECT_ANSWER,
+  SET_QUESTION_SELECTED
+} from "./types";
 
 export const getQuestions = () => dispatch => {
   axios
@@ -13,8 +18,13 @@ export const getQuestions = () => dispatch => {
     .catch(err => console.log(err));
 };
 
+export const setQuestionSelected = () => dispatch => {
+  dispatch({
+    type: SET_QUESTION_SELECTED
+  });
+};
+
 export const getAnswers = answers => dispatch => {
-  console.log(answers);
   axios
     .get("/api/game/answers", { params: { answers: answers.join(",") } })
     .then(res =>
