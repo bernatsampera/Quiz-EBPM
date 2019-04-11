@@ -19,7 +19,10 @@ export class Game extends Component {
     var socket;
 
     socket = socketIOClient("http://172.16.9.15:3001/");
-
+    socket.emit("user", this.props.auth.user);
+    socket.on("send_user", user => {
+      console.log(user);
+    });
     // this.startGame();
   }
 
@@ -83,7 +86,8 @@ Game.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  game: state.game
+  game: state.game,
+  auth: state.auth
 });
 
 export default connect(

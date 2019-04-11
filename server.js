@@ -34,6 +34,10 @@ server.listen(3001, () => {
 
 io.on("connection", socket => {
   console.log("New client connected" + socket.id);
+
+  socket.on("user", data => {
+    io.sockets.emit("send_user", data.name);
+  });
 });
 
 //Passport middleware
