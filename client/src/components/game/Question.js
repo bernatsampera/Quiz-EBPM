@@ -1,37 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { addScore } from "../../actions/gameActions";
 
 export class Question extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hasAnswered: false,
-      isAnswerCorrect: null
+      hasAnswered: false
     };
   }
 
   handleAnswer(answer_id) {
-    this.setState({});
+    this.setState({
+      hasAnswered: true
+    });
     const { correctAnswer } = this.props.game;
     if (correctAnswer._id == answer_id) {
-      this.setState({
-        hasAnswered: true,
-        isAnswerCorrect: true
-      });
+      this.props.addScore(10);
     } else {
-      this.setState({
-        hasAnswered: true,
-        isAnswerCorrect: false
-      });
+      this.props.addScore(-10);
     }
   }
 
   render() {
     const { question_text, answers } = this.props;
     const { correctAnswer } = this.props.game;
-    const { hasAnswered, isAnswerCorrect } = this.state;
+    const { hasAnswered } = this.state;
 
     return (
       <div>
@@ -41,7 +37,8 @@ export class Question extends Component {
           {answers.map((answer, index) => (
             <button
               key={answer._id}
-              className={`btn btn-block m-4 ${
+              disabled={hasAnswered}
+              className={`btn btn-block m-4 answer ${
                 !hasAnswered
                   ? ""
                   : correctAnswer._id == answer._id
@@ -70,5 +67,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { addScore }
 )(Question);

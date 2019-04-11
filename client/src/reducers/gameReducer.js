@@ -2,7 +2,8 @@ import {
   GET_QUESTIONS,
   GET_ANSWERS,
   GET_CORRECT_ANSWER,
-  SET_QUESTION_SELECTED
+  SET_QUESTION_SELECTED,
+  ADD_SCORE
 } from "../actions/types";
 
 const initialState = {
@@ -10,7 +11,7 @@ const initialState = {
   answers: [],
   correctAnswer: {},
   questionSelected: {},
-  puntuation: 0
+  score: 0
 };
 
 export default function(state = initialState, action) {
@@ -41,6 +42,11 @@ export default function(state = initialState, action) {
             : state.questions[
                 state.questions.indexOf(state.questionSelected) + 1
               ]
+      };
+    case ADD_SCORE:
+      return {
+        ...state,
+        score: state.score + action.payload
       };
     default:
       return state;

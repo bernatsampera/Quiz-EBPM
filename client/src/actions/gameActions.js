@@ -3,7 +3,8 @@ import {
   GET_QUESTIONS,
   GET_ANSWERS,
   GET_CORRECT_ANSWER,
-  SET_QUESTION_SELECTED
+  SET_QUESTION_SELECTED,
+  ADD_SCORE
 } from "./types";
 
 export const getQuestions = () => dispatch => {
@@ -46,4 +47,11 @@ export const getCorrectAnswer = correctanswer => dispatch => {
       })
     )
     .catch(err => console.log(err));
+};
+
+export const addScore = score => dispatch => {
+  dispatch({
+    type: ADD_SCORE,
+    payload: score
+  });
 };

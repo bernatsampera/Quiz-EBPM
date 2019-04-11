@@ -37,7 +37,7 @@ export class Game extends Component {
   }
 
   render() {
-    const { answers, questionSelected } = this.props.game;
+    const { answers, questionSelected, score } = this.props.game;
 
     let gameContent;
     if (isEmpty(questionSelected)) {
@@ -60,7 +60,11 @@ export class Game extends Component {
     return (
       <div>
         <h1> This is the game </h1>
-        <Countdown date={Date.now() + 5000} />
+        <p> Score: {score}</p>
+        <p>
+          {" "}
+          <Countdown date={Date.now() + 5000} />{" "}
+        </p>
         {gameContent}
       </div>
     );
