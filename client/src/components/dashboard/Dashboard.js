@@ -11,40 +11,6 @@ export class Dashboard extends Component {
 
   render() {
     const { user } = this.props.auth;
-    const { profile, loading } = this.props.profile;
-
-    let dashboardContent;
-
-    if (profile === null || loading) {
-      dashboardContent = <Spinner />;
-    } else {
-      // Check if logged in user has profile data
-      if (Object.keys(profile).length > 0) {
-        dashboardContent = (
-          <div>
-            <p className="lead text-muted">
-              Welcome{" "}
-              <Link to={`/profile/${profile.handle}`}> {user.name} </Link>{" "}
-            </p>
-            {/* TODO: exp and edu */}
-            <div style={{ marginBottom: "60px" }} />
-            <button
-              onClick={this.onDeleteClick.bind(this)}
-              className="btn btn-danger"
-            >
-              Delete My Account
-            </button>
-          </div>
-        );
-      } else {
-        // User is logged in but has no profile
-        dashboardContent = (
-          <div>
-            <p className="lead text-muted">Welcome {user.name}</p>
-          </div>
-        );
-      }
-    }
 
     return (
       <div className="dashboard">
@@ -52,7 +18,12 @@ export class Dashboard extends Component {
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4"> Dashboard </h1>
-              {dashboardContent}
+              <div>
+                <p className="lead text-muted">Welcome {user.name}</p>
+              </div>
+              <Link className="nav-link btn btn-primary" to="/game">
+                Play
+              </Link>
             </div>
           </div>
         </div>
@@ -62,13 +33,10 @@ export class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  deleteAccount: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile,
   auth: state.auth
 });
 
