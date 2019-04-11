@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
+const http = require("http");
+const socketServer = require("socket.io");
 
 const users = require("./routes/api/users");
 const game = require("./routes/api/game");
@@ -18,12 +20,21 @@ const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
+
+// Starts Sockets
+var server = http.createServer(app);
+const io = socketServer(server);
+
+server.listen(3001, () => {
+  console.log("Socket Server listening on 3001");
+});
+
+io.on("connection", socket => {
+  console.log("New client connected" + socket.id);
+});
 
 //Passport middleware
 app.use(passport.initialize());

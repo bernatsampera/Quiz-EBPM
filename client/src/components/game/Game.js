@@ -11,11 +11,16 @@ import Countdown from "react-countdown-now";
 import Question from "./Question";
 import Spinner from "../common/Spinner";
 import isEmpty from "../../validation/is-empty";
+import socketIOClient from "socket.io-client";
 
 export class Game extends Component {
   componentDidMount() {
-    this.props.getQuestions();
-    this.startGame();
+    // Start on socket
+    var socket;
+
+    socket = socketIOClient("http://172.16.9.15:3001/");
+
+    // this.startGame();
   }
 
   componentWillReceiveProps(nextprops) {
@@ -23,9 +28,14 @@ export class Game extends Component {
       const { questionSelected } = nextprops.game;
       this.setAnswer(questionSelected);
     }
+
+    if (nextprops.game.score != this.props.game.score) {
+      // TODO: socket
+    }
   }
 
   startGame() {
+    this.props.getQuestions();
     setInterval(() => {
       this.props.setQuestionSelected();
     }, 5000);
@@ -61,10 +71,7 @@ export class Game extends Component {
       <div>
         <h1> This is the game </h1>
         <p> Score: {score}</p>
-        <p>
-          {" "}
-          <Countdown date={Date.now() + 5000} />{" "}
-        </p>
+        <p> {/* <Countdown date={Date.now() + 5000} />{" "} */}</p>
         {gameContent}
       </div>
     );
