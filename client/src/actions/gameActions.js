@@ -26,9 +26,9 @@ export const getAnswers = answers => dispatch => {
     .catch(err => console.log(err));
 };
 
-export const getCorrectAnswer = correctAnswer => dispatch => {
+export const getCorrectAnswer = correctanswer => dispatch => {
   axios
-    .get("/api/game/correctanswer", { params: { correctAnswer } })
+    .get("/api/game/correctanswer", { params: { correctanswer } })
     .then(res =>
       dispatch({
         type: GET_CORRECT_ANSWER,

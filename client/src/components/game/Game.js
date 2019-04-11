@@ -17,6 +17,7 @@ export class Game extends Component {
 
   setAnswer(question) {
     this.props.getAnswers(question.answers);
+    this.props.getCorrectAnswer(question.correctAnswer);
   }
 
   render() {

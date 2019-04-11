@@ -88,7 +88,7 @@ router.get("/answers", (req, res) => {
 // @access  Public
 router.get("/correctanswer", (req, res) => {
   const { correctanswer } = req.query;
-
+  console.log(correctanswer);
   Answer.findById(correctanswer)
     .then(answer => res.json(answer))
     .catch(err => console.log(err));
