@@ -10,6 +10,8 @@ export class Stats extends Component {
     room.forEach(user => (user.score >= winner.score ? (winner = user) : null));
     let statsContent;
 
+    room.forEach(user => this.props.postStat(user));
+
     if (room.filter(user => user.score == winner.score).length > 1) {
       statsContent = <p> DRAW! </p>;
     } else {
