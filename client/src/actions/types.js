@@ -9,3 +9,5 @@ export const ADD_SCORE = "ADD_SCORE";
 export const SET_ROOM = "SET_ROOM";
 export const END_GAME = "END_GAME";
 export const SET_ORDER = "SET_ORDER";
+export const GET_STAT = "GET_STAT";
+export const POST_STAT = "POST_STAT";

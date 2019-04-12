@@ -18,6 +18,7 @@ import isEmpty from "../../validation/is-empty";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
 import Stats from "./Stats";
+import "./game.css";
 
 export class Game extends Component {
   intervalQuestions = 0;
@@ -109,15 +110,16 @@ export class Game extends Component {
     let roomContent;
 
     if (isEmpty(room)) {
-      roomContent = <Spinner />;
+      roomContent = null;
     } else {
       roomContent = (
         <div>
+          <h4> Users ready to play: </h4>
           {room.map((user, index) => (
-            <p key={index}>{user.name}</p>
+            <h5 key={index}>{user.name}</h5>
           ))}
           <button
-            className="btn btn-success"
+            className="btn btn-success m-5"
             onClick={this.clickStart.bind(this)}
           >
             Start Game
@@ -127,7 +129,7 @@ export class Game extends Component {
     }
 
     if (isEmpty(questionSelected) || isEmpty(answers)) {
-      gameContent = <Spinner />;
+      gameContent = null;
     } else {
       if (currentOrder != -1) {
         if (isEmpty(answers)) {
@@ -161,19 +163,21 @@ export class Game extends Component {
     }
 
     return (
-      <div className="container text-center m-5">
-        <h1> This is the game </h1>
-        <p> {/* <Countdown date={Date.now() + 5000} />{" "} */}</p>
-        {play ? gameContent : roomContent}
+      <div className="game">
+        <div className="container text-center p-5">
+          <h1> Quiz Game </h1>
+          <p> {/* <Countdown date={Date.now() + 5000} />{" "} */}</p>
+          {play ? gameContent : roomContent}
 
-        <Link
-          to="/dashboard"
-          className="btn btn-danger mt-5"
-          onClick={this.endGame.bind(this)}
-        >
-          {" "}
-          Exit{" "}
-        </Link>
+          <Link
+            to="/dashboard"
+            className="btn btn-danger mt-5"
+            onClick={this.endGame.bind(this)}
+          >
+            {" "}
+            Return{" "}
+          </Link>
+        </div>
       </div>
     );
   }

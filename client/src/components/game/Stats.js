@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { getStats, postStat } from "../../actions/statsActions";
 
 export class Stats extends Component {
   render() {
@@ -27,4 +29,7 @@ Stats.propTypes = {
   room: PropTypes.array.isRequired
 };
 
-export default Stats;
+export default connect(
+  null,
+  { getStats, postStat }
+)(Stats);

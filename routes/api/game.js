@@ -3,9 +3,10 @@ const router = express.Router();
 
 // Load Question model
 const Question = require("../../models/Question");
-
 // Load Answer model
 const Answer = require("../../models/Answer");
+// Load Stat model
+const Stat = require("../../models/Stat");
 
 // @route   Get api/game/question
 // @desc    Retrieves all questions
@@ -88,12 +89,39 @@ router.get("/answers", (req, res) => {
 // @access  Public
 router.get("/correctanswer", (req, res) => {
   const { correctanswer } = req.query;
-  console.log("correctanswer:" + correctanswer);
   Answer.findById(correctanswer)
     .then(answer => {
-      console.log("answer:" + answer);
       res.json(answer);
     })
+    .catch(err => console.log(err));
+});
+
+// @route   get api/game/stat
+// @desc    Gets stat
+// @access  Public
+router.get("/stat", (req, res) => {
+  Stat.find()
+    .then(stats => res.json(stats))
+    .catch(err => console.log(err));
+});
+
+// @route   post api/game/stat
+// @desc    post stat
+// @access  Public
+router.post("/stat", (req, res) => {
+  const score = req.body.score;
+  const user = req.body.user;
+
+  console.log(user);
+
+  const stat = new Stat({
+    user,
+    score
+  });
+
+  stat
+    .save()
+    .then(res.json(stat))
     .catch(err => console.log(err));
 });
 
