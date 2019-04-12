@@ -28,7 +28,6 @@ export class Question extends Component {
     const { question_text, answers } = this.props;
     const { correctAnswer } = this.props.game;
     const { hasAnswered } = this.state;
-
     return (
       <div>
         {question_text}

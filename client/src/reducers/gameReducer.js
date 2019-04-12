@@ -44,7 +44,7 @@ export default function(state = initialState, action) {
         questionSelected: state.questions[state.order[state.currentOrder]],
         currentOrder:
           state.currentOrder + 1 >= state.order.length
-            ? 0
+            ? -1
             : state.currentOrder + 1,
         answers: []
       };

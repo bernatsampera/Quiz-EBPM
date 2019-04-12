@@ -17,6 +17,7 @@ import Spinner from "../common/Spinner";
 import isEmpty from "../../validation/is-empty";
 import socketIOClient from "socket.io-client";
 import Room from "./Room";
+import Stats from "./Stats";
 
 export class Game extends Component {
   intervalQuestions = 0;
@@ -31,7 +32,7 @@ export class Game extends Component {
 
   componentDidMount() {
     // Start on socket
-    var socket = socketIOClient("http://192.168.16.73:3001/");
+    var socket = socketIOClient("http://172.16.9.15:3001/");
 
     socket.emit("user", this.props.auth.user);
     socket.on("room", room => {
@@ -66,11 +67,11 @@ export class Game extends Component {
 
     this.intervalQuestions = setInterval(() => {
       this.props.setQuestionSelected();
-    }, 5000);
+    }, 2000);
   }
 
   clickStart() {
-    const order = Array.apply(null, { length: 4 })
+    const order = Array.apply(null, { length: 6 })
       .map(Number.call, Number)
       .sort((a, b) => 0.5 - Math.random());
     this.state.socket.emit("start", order);
@@ -96,7 +97,13 @@ export class Game extends Component {
   }
 
   render() {
-    const { answers, questionSelected, score, room } = this.props.game;
+    const {
+      answers,
+      questionSelected,
+      score,
+      room,
+      currentOrder
+    } = this.props.game;
     const { play } = this.state;
     let gameContent;
     let roomContent;
@@ -122,29 +129,40 @@ export class Game extends Component {
     if (isEmpty(questionSelected) || isEmpty(answers)) {
       gameContent = <Spinner />;
     } else {
-      if (isEmpty(answers)) {
-        this.setAnswer(questionSelected);
-      }
-      gameContent = (
-        <div className="row">
-          <div className="col-md-8">
-            <Question
-              key={questionSelected._id}
-              question_text={questionSelected.text}
-              answers={answers}
-            />
+      if (currentOrder != -1) {
+        if (isEmpty(answers)) {
+          this.setAnswer(questionSelected);
+        }
+        gameContent = (
+          <div className="row">
+            <div className="col-md-8">
+              <p> Score: {score}</p>
+
+              <Question
+                key={questionSelected._id}
+                question_text={questionSelected.text}
+                answers={answers}
+              />
+            </div>
+            <div className="col-md-4">
+              <Room room={room} />
+            </div>
           </div>
-          <div className="col-md-4">
+        );
+      } else {
+        clearInterval(this.intervalQuestions);
+        gameContent = (
+          <div className="container">
+            <Stats room={room} />
             <Room room={room} />
           </div>
-        </div>
-      );
+        );
+      }
     }
 
     return (
       <div className="container text-center m-5">
         <h1> This is the game </h1>
-        <p> Score: {score}</p>
         <p> {/* <Countdown date={Date.now() + 5000} />{" "} */}</p>
         {play ? gameContent : roomContent}
 

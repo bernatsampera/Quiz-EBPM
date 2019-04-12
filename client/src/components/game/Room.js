@@ -7,7 +7,7 @@ export class Room extends Component {
 
     return (
       <div>
-        <h1> Game Stats </h1>{" "}
+        <h3> Game Stats </h3>{" "}
         {room.map((user, index) => (
           <div key={index}>
             <span>{`User: ${user.name}, Score: ${user.score}`}</span>
