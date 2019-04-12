@@ -6,7 +6,8 @@ import {
   SET_QUESTION_SELECTED,
   ADD_SCORE,
   SET_ROOM,
-  END_GAME
+  END_GAME,
+  SET_ORDER
 } from "./types";
 
 export const getQuestions = () => dispatch => {
@@ -27,6 +28,7 @@ export const setQuestionSelected = () => dispatch => {
   });
 };
 
+// Get answers
 export const getAnswers = answers => dispatch => {
   axios
     .get("/api/game/answers", { params: { answers: answers.join(",") } })
@@ -39,6 +41,7 @@ export const getAnswers = answers => dispatch => {
     .catch(err => console.log(err));
 };
 
+// Get correct answer
 export const getCorrectAnswer = correctanswer => dispatch => {
   axios
     .get("/api/game/correctanswer", { params: { correctanswer } })
@@ -68,5 +71,12 @@ export const addRoom = room => dispatch => {
 export const endGame = () => dispatch => {
   dispatch({
     type: END_GAME
+  });
+};
+
+export const setOrder = order => dispatch => {
+  dispatch({
+    type: SET_ORDER,
+    payload: order
   });
 };

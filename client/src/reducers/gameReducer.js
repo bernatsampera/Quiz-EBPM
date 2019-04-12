@@ -5,7 +5,8 @@ import {
   SET_QUESTION_SELECTED,
   ADD_SCORE,
   SET_ROOM,
-  END_GAME
+  END_GAME,
+  SET_ORDER
 } from "../actions/types";
 
 const initialState = {
@@ -13,6 +14,8 @@ const initialState = {
   answers: [],
   correctAnswer: {},
   questionSelected: {},
+  order: [],
+  currentOrder: 1,
   score: 0,
   room: []
 };
@@ -23,7 +26,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         questions: action.payload,
-        questionSelected: action.payload[3]
+        questionSelected: action.payload[state.order[0]]
       };
     case GET_ANSWERS:
       return {
@@ -38,14 +41,17 @@ export default function(state = initialState, action) {
     case SET_QUESTION_SELECTED:
       return {
         ...state,
-        questionSelected:
-          state.questions.indexOf(state.questionSelected) + 1 >=
-          state.questions.length
-            ? state.questions[0]
-            : state.questions[
-                state.questions.indexOf(state.questionSelected) + 1
-              ],
+        questionSelected: state.questions[state.order[state.currentOrder]],
+        currentOrder:
+          state.currentOrder + 1 >= state.order.length
+            ? 0
+            : state.currentOrder + 1,
         answers: []
+      };
+    case SET_ORDER:
+      return {
+        ...state,
+        order: action.payload
       };
     case ADD_SCORE:
       return {
@@ -64,6 +70,8 @@ export default function(state = initialState, action) {
         answers: [],
         correctAnswer: {},
         questionSelected: {},
+        order: [],
+        currentOrder: 1,
         score: 0,
         room: []
       };

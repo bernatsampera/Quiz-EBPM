@@ -8,3 +8,4 @@ export const GET_CORRECT_ANSWER = "GET_CORRECT_ANSWER";
 export const ADD_SCORE = "ADD_SCORE";
 export const SET_ROOM = "SET_ROOM";
 export const END_GAME = "END_GAME";
+export const SET_ORDER = "SET_ORDER";

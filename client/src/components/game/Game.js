@@ -8,7 +8,8 @@ import {
   getCorrectAnswer,
   setQuestionSelected,
   addRoom,
-  endGame
+  endGame,
+  setOrder
 } from "../../actions/gameActions";
 import Countdown from "react-countdown-now";
 import Question from "./Question";
@@ -36,7 +37,7 @@ export class Game extends Component {
     socket.on("room", room => {
       this.props.addRoom(room);
     });
-    socket.on("start", () => this.startGame());
+    socket.on("start", order => this.startGame(order));
     this.setState({
       socket,
       play: false
@@ -56,7 +57,8 @@ export class Game extends Component {
     }
   }
 
-  startGame() {
+  startGame(order) {
+    this.props.setOrder(order);
     this.setState({
       play: true
     });
@@ -68,7 +70,10 @@ export class Game extends Component {
   }
 
   clickStart() {
-    this.state.socket.emit("start", {});
+    const order = Array.apply(null, { length: 4 })
+      .map(Number.call, Number)
+      .sort((a, b) => 0.5 - Math.random());
+    this.state.socket.emit("start", order);
   }
 
   setAnswer(question) {
@@ -78,7 +83,7 @@ export class Game extends Component {
 
   endGame() {
     this.state.socket.emit("removeuser", this.props.auth.user);
-    this.state.socket.emit("removeSocket", this.state.socket);
+    // this.state.socket.emit("removeSocket", this.state.socket);
     this.setState({
       play: false
     });
@@ -95,6 +100,7 @@ export class Game extends Component {
     const { play } = this.state;
     let gameContent;
     let roomContent;
+
     if (isEmpty(room)) {
       roomContent = <Spinner />;
     } else {
@@ -172,6 +178,7 @@ export default connect(
     getCorrectAnswer,
     setQuestionSelected,
     addRoom,
-    endGame
+    endGame,
+    setOrder
   }
 )(Game);

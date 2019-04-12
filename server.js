@@ -38,9 +38,9 @@ var socs = [];
 io.on("connection", socket => {
   socs.push(socket);
 
-  socket.on("start", () => {
+  socket.on("start", order => {
     console.log("start game");
-    socs.forEach(socket => socket.emit("start"));
+    socs.forEach(socket => socket.emit("start", order));
   });
 
   socket.on("user", async data => {
