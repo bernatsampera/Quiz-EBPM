@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import Navbar from "../layout/Navbar";
 
 class Login extends Component {
   constructor() {
@@ -53,6 +54,8 @@ class Login extends Component {
 
     return (
       <div className="login">
+        <Navbar />
+
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">

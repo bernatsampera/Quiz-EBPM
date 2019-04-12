@@ -38,6 +38,11 @@ var socs = [];
 io.on("connection", socket => {
   socs.push(socket);
 
+  socket.on("start", () => {
+    console.log("start game");
+    socs.forEach(socket => socket.emit("start"));
+  });
+
   socket.on("user", async data => {
     if (room.filter(user => user.name == data.name).length == 0) {
       await room.push({
@@ -55,9 +60,17 @@ io.on("connection", socket => {
     socs.forEach(socket => socket.emit("room", room));
   }); // remove user
 
+  socket.on("removeuser", socket => {
+    socs.pop(socket);
+  }); // remove user
+
   socket.on("score", async data => {
     console.log(data.user);
     console.log(data.score);
+    await room.map(user =>
+      user.name == data.user.name ? (user.score = data.score) : null
+    );
+    socs.forEach(socket => socket.emit("room", room));
   });
 
   socket.on("disconnect", function() {

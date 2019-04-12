@@ -20,7 +20,7 @@ export class Question extends Component {
     if (correctAnswer._id == answer_id) {
       this.props.addScore(10);
     } else {
-      this.props.addScore(-10);
+      this.props.addScore(-5);
     }
   }
 

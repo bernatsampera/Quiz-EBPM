@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import Navbar from "../layout/Navbar";
 
 class Register extends Component {
   constructor() {
@@ -54,6 +55,8 @@ class Register extends Component {
 
     return (
       <div className="register">
+        <Navbar />
+
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">

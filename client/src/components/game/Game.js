@@ -7,13 +7,15 @@ import {
   getAnswers,
   getCorrectAnswer,
   setQuestionSelected,
-  addRoom
+  addRoom,
+  endGame
 } from "../../actions/gameActions";
 import Countdown from "react-countdown-now";
 import Question from "./Question";
 import Spinner from "../common/Spinner";
 import isEmpty from "../../validation/is-empty";
 import socketIOClient from "socket.io-client";
+import Room from "./Room";
 
 export class Game extends Component {
   intervalQuestions = 0;
@@ -34,6 +36,7 @@ export class Game extends Component {
     socket.on("room", room => {
       this.props.addRoom(room);
     });
+    socket.on("start", () => this.startGame());
     this.setState({
       socket,
       play: false
@@ -48,7 +51,7 @@ export class Game extends Component {
 
     if (nextprops.game.score != this.props.game.score) {
       const { user } = this.props.auth;
-      const { score } = this.props.game;
+      const { score } = nextprops.game;
       this.state.socket.emit("score", { user, score });
     }
   }
@@ -64,6 +67,10 @@ export class Game extends Component {
     }, 5000);
   }
 
+  clickStart() {
+    this.state.socket.emit("start", {});
+  }
+
   setAnswer(question) {
     this.props.getAnswers(question.answers);
     this.props.getCorrectAnswer(question.correctAnswer);
@@ -71,11 +78,16 @@ export class Game extends Component {
 
   endGame() {
     this.state.socket.emit("removeuser", this.props.auth.user);
+    this.state.socket.emit("removeSocket", this.state.socket);
     this.setState({
       play: false
     });
     clearInterval(this.intervalQuestions);
-    // this.props.endGame();
+    this.props.endGame();
+  }
+
+  componentWillUnmount() {
+    this.endGame();
   }
 
   render() {
@@ -91,6 +103,12 @@ export class Game extends Component {
           {room.map((user, index) => (
             <p key={index}>{user.name}</p>
           ))}
+          <button
+            className="btn btn-success"
+            onClick={this.clickStart.bind(this)}
+          >
+            Start Game
+          </button>
         </div>
       );
     }
@@ -102,12 +120,17 @@ export class Game extends Component {
         this.setAnswer(questionSelected);
       }
       gameContent = (
-        <div>
-          <Question
-            key={questionSelected._id}
-            question_text={questionSelected.text}
-            answers={answers}
-          />
+        <div className="row">
+          <div className="col-md-8">
+            <Question
+              key={questionSelected._id}
+              question_text={questionSelected.text}
+              answers={answers}
+            />
+          </div>
+          <div className="col-md-4">
+            <Room room={room} />
+          </div>
         </div>
       );
     }
@@ -118,12 +141,10 @@ export class Game extends Component {
         <p> Score: {score}</p>
         <p> {/* <Countdown date={Date.now() + 5000} />{" "} */}</p>
         {play ? gameContent : roomContent}
-        <button className="btn btn-success" onClick={this.startGame.bind(this)}>
-          Start Game
-        </button>
+
         <Link
           to="/dashboard"
-          className="btn btn-danger"
+          className="btn btn-danger mt-5"
           onClick={this.endGame.bind(this)}
         >
           {" "}
@@ -145,5 +166,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getQuestions, getAnswers, getCorrectAnswer, setQuestionSelected, addRoom }
+  {
+    getQuestions,
+    getAnswers,
+    getCorrectAnswer,
+    setQuestionSelected,
+    addRoom,
+    endGame
+  }
 )(Game);
