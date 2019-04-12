@@ -3,7 +3,8 @@ import {
   GET_ANSWERS,
   GET_CORRECT_ANSWER,
   SET_QUESTION_SELECTED,
-  ADD_SCORE
+  ADD_SCORE,
+  SET_ROOM
 } from "../actions/types";
 
 const initialState = {
@@ -11,7 +12,8 @@ const initialState = {
   answers: [],
   correctAnswer: {},
   questionSelected: {},
-  score: 0
+  score: 0,
+  room: []
 };
 
 export default function(state = initialState, action) {
@@ -41,12 +43,18 @@ export default function(state = initialState, action) {
             ? state.questions[0]
             : state.questions[
                 state.questions.indexOf(state.questionSelected) + 1
-              ]
+              ],
+        answers: []
       };
     case ADD_SCORE:
       return {
         ...state,
         score: state.score + action.payload
+      };
+    case SET_ROOM:
+      return {
+        ...state,
+        room: action.payload
       };
     default:
       return state;

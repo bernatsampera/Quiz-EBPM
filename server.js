@@ -32,13 +32,38 @@ server.listen(3001, () => {
   console.log("Socket Server listening on 3001");
 });
 
-io.on("connection", socket => {
-  console.log("New client connected" + socket.id);
+var room = [];
+var socs = [];
 
-  socket.on("user", data => {
-    io.sockets.emit("send_user", data.name);
+io.on("connection", socket => {
+  socs.push(socket);
+
+  socket.on("user", async data => {
+    if (room.filter(user => user.name == data.name).length == 0) {
+      await room.push({
+        name: data.name,
+        score: 0
+      });
+      socs.forEach(socket => socket.emit("room", room));
+    }
+  }); // add user
+
+  socket.on("removeuser", async data => {
+    await room.forEach(user =>
+      user.name == data.name ? room.pop(user) : null
+    );
+    socs.forEach(socket => socket.emit("room", room));
+  }); // remove user
+
+  socket.on("score", async data => {
+    console.log(data.user);
+    console.log(data.score);
   });
-});
+
+  socket.on("disconnect", function() {
+    console.log("Desconnexió: " + socket.id);
+  }); // disconnect
+}); // end connection
 
 //Passport middleware
 app.use(passport.initialize());

@@ -6,3 +6,4 @@ export const SET_QUESTION_SELECTED = "SET_QUESTION_SELECTED";
 export const GET_ANSWERS = "GET_ANSWERS";
 export const GET_CORRECT_ANSWER = "GET_CORRECT_ANSWER";
 export const ADD_SCORE = "ADD_SCORE";
+export const SET_ROOM = "SET_ROOM";

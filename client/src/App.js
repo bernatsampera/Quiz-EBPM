@@ -46,9 +46,8 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Navbar />
             <Route exact path="/" component={Landing} />
-            <div className="container">
+            <div className="">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Switch>
@@ -57,7 +56,6 @@ class App extends Component {
               </Switch>
               <Route exact path="/not-found" component={NotFound} />
             </div>
-            <Footer />
           </div>
         </Router>
       </Provider>

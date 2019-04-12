@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../common/Spinner";
+import Navbar from "../layout/Navbar";
+import Footer from "../layout/Footer";
 
 export class Dashboard extends Component {
   onDeleteClick(e) {
@@ -14,6 +16,8 @@ export class Dashboard extends Component {
 
     return (
       <div className="dashboard">
+        <Navbar />
+
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -27,6 +31,7 @@ export class Dashboard extends Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

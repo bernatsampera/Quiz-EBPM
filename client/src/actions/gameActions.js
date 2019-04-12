@@ -4,7 +4,8 @@ import {
   GET_ANSWERS,
   GET_CORRECT_ANSWER,
   SET_QUESTION_SELECTED,
-  ADD_SCORE
+  ADD_SCORE,
+  SET_ROOM
 } from "./types";
 
 export const getQuestions = () => dispatch => {
@@ -53,5 +54,12 @@ export const addScore = score => dispatch => {
   dispatch({
     type: ADD_SCORE,
     payload: score
+  });
+};
+
+export const addRoom = room => dispatch => {
+  dispatch({
+    type: SET_ROOM,
+    payload: room
   });
 };
