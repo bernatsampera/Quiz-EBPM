@@ -33,7 +33,7 @@ export class Game extends Component {
 
   componentDidMount() {
     // Start on socket
-    var socket = socketIOClient("http://172.16.9.14:3001/");
+    var socket = socketIOClient("http://172.16.9.15:3001/");
 
     socket.emit("user", this.props.auth.user);
     socket.on("room", room => {
@@ -68,7 +68,7 @@ export class Game extends Component {
 
     this.intervalQuestions = setInterval(() => {
       this.props.setQuestionSelected();
-    }, 2000);
+    }, 7000);
   }
 
   clickStart() {

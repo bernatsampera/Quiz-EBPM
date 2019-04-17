@@ -7,7 +7,8 @@ import {
   ADD_SCORE,
   SET_ROOM,
   END_GAME,
-  SET_ORDER
+  SET_ORDER,
+  GET_STAT
 } from "./types";
 
 export const getQuestions = () => dispatch => {
@@ -79,4 +80,23 @@ export const setOrder = order => dispatch => {
     type: SET_ORDER,
     payload: order
   });
+};
+
+export const getStat = () => dispatch => {
+  axios
+    .get("/api/game/stat")
+    .then(stats =>
+      dispatch({
+        type: GET_STAT,
+        payload: stats
+      })
+    )
+    .catch(err => console.log(err));
+};
+
+export const postStat = stat => dispatch => {
+  axios
+    .post("/api/game/stat", stat)
+    .then(stat => console.log(stat))
+    .catch(err => console.log(err));
 };

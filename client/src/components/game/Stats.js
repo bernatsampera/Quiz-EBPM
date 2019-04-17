@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getStats, postStat } from "../../actions/statsActions";
+import { postStat } from "../../actions/gameActions";
 
 export class Stats extends Component {
   render() {
@@ -9,8 +9,6 @@ export class Stats extends Component {
     let winner = room[0];
     room.forEach(user => (user.score >= winner.score ? (winner = user) : null));
     let statsContent;
-
-    room.forEach(user => this.props.postStat(user));
 
     if (room.filter(user => user.score == winner.score).length > 1) {
       statsContent = <p> DRAW! </p>;
@@ -33,5 +31,5 @@ Stats.propTypes = {
 
 export default connect(
   null,
-  { getStats, postStat }
+  { postStat }
 )(Stats);
